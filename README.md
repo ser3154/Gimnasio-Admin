@@ -1,3 +1,29 @@
+Ejercicio 1
+
+- ¿Qué archivo de Angular hace el papel de main.tsx, App.tsx y vite.config.ts?
+  - main.tsx: src/main.ts: arranca la aplicación con "bootstrapApplication (App, appConfig)"
+  - App.tsx: src/app/app.ts: es el componente raíz.
+  - vite.config.ts: angular.json: configura el build, el servidor de desarrollo, los assets y
+    los estilos globales.
+
+ Ejercicio 2
+ 
+- ¿Por qué clase() lleva paréntesis?
+  Porque "input.required()" devuelve un signal, y un signal es una función. Se llama con
+  paréntesis para leer su valor actual, y así Angular sabe que el template depende de él y lo
+  actualiza cuando cambia.
+
+- ¿Para qué sirve "track"?
+  Le dice a Angular cómo identificar cada elemento de la lista. Con eso, cuando la lista cambia,
+  reutiliza los nodos del DOM que ya existen y solo crea, mueve o elimina los necesarios, en vez
+   de repintar todo.
+
+  Errores provocados
+  - NG8001: `'app-tarjeta-clase' is not a known element`, por quitar `TarjetaClase` de `imports`. Ver `evidencias/`.
+  - NG5002: error de sintaxis del template, por dejar el bloque `@for` sin cerrar. Ver `evidencias/`.
+
+
+
 # GimnasioAdmin
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
