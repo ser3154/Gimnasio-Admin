@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Clase } from '../modelos/clase';
 
 @Component({
@@ -9,4 +9,10 @@ import { Clase } from '../modelos/clase';
 })
 export class TarjetaClase {
   readonly clase = input.required<Clase>();
+  readonly activa = input(false);
+  readonly elegida = output<Clase>();
+
+  protected elegir(): void {
+    this.elegida.emit(this.clase());
+  }
 }

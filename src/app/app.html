@@ -22,7 +22,7 @@
       <span class="resumen__texto">Total de clases</span>
     </div>
     <div class="resumen__dato">
-      <span class="resumen__numero">{{ minutosSemana() }}</span>
+      <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
       <span class="resumen__texto">Minutos a la semana</span>
     </div>
     <div class="resumen__dato">
@@ -31,16 +31,36 @@
     </div>
   </section>
 
+  <app-filtro-categoria />
+
   <div class="acciones">
-    <button class="boton boton--peligro" (click)="vaciar()">Vaciar catálogo</button>
-    <button class="boton boton--secundario" (click)="restaurar()">Restaurar catálogo</button>
+    <button class="boton boton--peligro" (click)="catalogo.vaciar()">Vaciar catálogo</button>
+    <button class="boton boton--secundario" (click)="catalogo.restaurar()">Restaurar catálogo</button>
   </div>
 
-  <section class="rejilla" style="margin-top: 1rem">
-    @for (clase of clases(); track clase.id) {
-      <app-tarjeta-clase [clase]="clase" />
-    } @empty {
-      <p class="vacio">No hay clases en el catálogo.</p>
-    }
-  </section>
+  <div class="tablero" style="margin-top: 1rem">
+    <section class="rejilla">
+      @for (clase of catalogo.visibles(); track clase.id) {
+        <app-tarjeta-clase
+          [clase]="clase"
+          [activa]="catalogo.claseSeleccionada()?.id === clase.id"
+          (elegida)="catalogo.seleccionar($event)"
+        />
+      } @empty {
+        <p class="vacio">No hay clases en el catálogo.</p>
+      }
+    </section>
+
+    <aside class="lateral tarjeta">
+      @if (catalogo.claseSeleccionada(); as sel) {
+        <img [src]="sel.imagen" [alt]="sel.nombre" />
+        <h2>{{ sel.nombre }}</h2>
+        <p>{{ sel.descripcion }}</p>
+        <div class="dato"><span class="dato__clave">Categoría:</span><span class="dato__valor">{{ sel.categoria }}</span></div>
+        <div class="dato"><span class="dato__clave">Duración:</span><span class="dato__valor">{{ sel.duracionMin }} min</span></div>
+      } @else {
+        <p class="vacio">Elige una clase para ver su detalle.</p>
+      }
+    </aside>
+  </div>
 </main>
