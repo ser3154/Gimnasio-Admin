@@ -1,3 +1,23 @@
+ Ejercicio 1
+ - ¿Qué diferencia hay entre un signal y un computed, y cuál se parece a useState y cuál a use Memo?
+   Un signal guarda un valor que se escribe con set() o update(). Un computed no se escribe: es
+   de solo lectura y su valor se deriva de otros signals. Se recalcula solo cuando cambia alguna
+   de sus dependencias y guarda en caché el resultado. Signal() se parece a useState, y
+   computed() se parece a useMemo, pero sin arreglo de dependencias, porque Angular las detecta
+   solo.
+
+ Ejercicio 2
+ - ¿Qué pasa si el filtro hace new Catalogo() en lugar de inject(Catalogo)?
+   Se crea una instancia nueva y aislada del servicio, con sus propios signals. El filtro
+   cambia la categoría de su copia, pero el tablero lee la instancia que inyecta Angular
+   (Singleton, providedIn: "root"), así que nunca se entera y el filtro no hace nada visible.
+   Además se pierde la inyección de dependencias y el servicio no se puede reemplazar en
+   pruebas.
+
+- NG8109: aparece al leer un signal en el template sin invocarlo ({{ total }} en lugar de
+  {{ total () }})
+
+
 # GimnasioAdmin
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
