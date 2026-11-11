@@ -1,11 +1,29 @@
+import { httpResource } from '@angular/common/http';
 import { computed, effect, Injectable, signal } from '@angular/core';
-import { CLASES_LOCALES } from './datos/clases-locales';
-import { Categoria, Clase } from './modelos/clase';
+import { API_URL } from './config';
+import { Categoria, Clase, Sobre } from './modelos/clase';
+import { mensajeDeError } from './servicios/errores';
 
 @Injectable({ providedIn: 'root' })
 export class Catalogo {
-  readonly clases = signal<Clase[]>(CLASES_LOCALES);
-  readonly categoriaElegida = signal<Categoria | null>(null); 
+  // GET /clases (público, sin token). La API responde { data, meta }.
+  private readonly recurso = httpResource<Sobre<Clase[]>>(() => `${API_URL}/clases`);
+
+  // Misma API pública que antes (clases, visibles...), pero derivada de la petición.
+  // La imagen llega como ruta relativa (/img/clase-01.jpg): se le antepone la URL de la API.
+  readonly clases = computed<Clase[]>(() =>
+    this.recurso.hasValue()
+      ? this.recurso.value().data.map((c) => ({ ...c, imagen: `${API_URL}${c.imagen}` }))
+      : [],
+  );
+
+  readonly cargando = this.recurso.isLoading;
+  readonly error = computed(() => {
+    const e = this.recurso.error();
+    return e ? mensajeDeError(e) : null;
+  });
+
+  readonly categoriaElegida = signal<Categoria | null>(null);
   readonly claseSeleccionada = signal<Clase | null>(null);
 
   readonly visibles = computed(() => {
@@ -34,11 +52,7 @@ export class Catalogo {
     this.claseSeleccionada.set(clase);
   }
 
-  vaciar(): void {
-    this.clases.set([]);
-  }
-
-  restaurar(): void {
-    this.clases.set(CLASES_LOCALES);
+  recargar(): void {
+    this.recurso.reload();
   }
 }

@@ -5,62 +5,13 @@
       Gimnasio Titanes
     </span>
     <span class="barra__etiqueta">Admin</span>
+
+    <nav class="barra__enlaces">
+      <a class="barra__enlace" routerLink="/clases" routerLinkActive="barra__enlace--activo">Clases</a>
+      <a class="barra__enlace" routerLink="/horarios" routerLinkActive="barra__enlace--activo">Horarios</a>
+      <a class="barra__enlace" routerLink="/miembros" routerLinkActive="barra__enlace--activo">Miembros</a>
+    </nav>
   </div>
 </header>
 
-<main class="pagina">
-  <div class="encabezado">
-    <div>
-      <h1>Tablero</h1>
-      <p>Resumen de las clases del gimnasio</p>
-    </div>
-  </div>
-
-  <section class="resumen">
-    <div class="resumen__dato">
-      <span class="resumen__numero">{{ total() }}</span>
-      <span class="resumen__texto">Total de clases</span>
-    </div>
-    <div class="resumen__dato">
-      <span class="resumen__numero">{{ catalogo.minutosTotales() }}</span>
-      <span class="resumen__texto">Minutos a la semana</span>
-    </div>
-    <div class="resumen__dato">
-      <span class="resumen__numero">{{ largas() }}</span>
-      <span class="resumen__texto">Clases de 1 hora o más</span>
-    </div>
-  </section>
-
-  <app-filtro-categoria />
-
-  <div class="acciones">
-    <button class="boton boton--peligro" (click)="catalogo.vaciar()">Vaciar catálogo</button>
-    <button class="boton boton--secundario" (click)="catalogo.restaurar()">Restaurar catálogo</button>
-  </div>
-
-  <div class="tablero" style="margin-top: 1rem">
-    <section class="rejilla">
-      @for (clase of catalogo.visibles(); track clase.id) {
-        <app-tarjeta-clase
-          [clase]="clase"
-          [activa]="catalogo.claseSeleccionada()?.id === clase.id"
-          (elegida)="catalogo.seleccionar($event)"
-        />
-      } @empty {
-        <p class="vacio">No hay clases en el catálogo.</p>
-      }
-    </section>
-
-    <aside class="lateral tarjeta">
-      @if (catalogo.claseSeleccionada(); as sel) {
-        <img [src]="sel.imagen" [alt]="sel.nombre" />
-        <h2>{{ sel.nombre }}</h2>
-        <p>{{ sel.descripcion }}</p>
-        <div class="dato"><span class="dato__clave">Categoría:</span><span class="dato__valor">{{ sel.categoria }}</span></div>
-        <div class="dato"><span class="dato__clave">Duración:</span><span class="dato__valor">{{ sel.duracionMin }} min</span></div>
-      } @else {
-        <p class="vacio">Elige una clase para ver su detalle.</p>
-      }
-    </aside>
-  </div>
-</main>
+<router-outlet />

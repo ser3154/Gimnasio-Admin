@@ -1,0 +1,75 @@
+<main class="pagina">
+  <div class="encabezado">
+    <div>
+      <h1>Nueva clase</h1>
+      <p>Llena los datos de la clase</p>
+    </div>
+    <a class="boton boton--secundario" routerLink="/clases">← Volver al catálogo</a>
+  </div>
+
+  <form class="tarjeta tarjeta--angosta" [formGroup]="formulario" (ngSubmit)="guardar()" novalidate>
+    <div class="campo">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" formControlName="nombre" />
+      @if (c.nombre.touched) {
+        @if (c.nombre.hasError('required')) { <span class="error">El nombre es obligatorio</span> }
+        @if (c.nombre.hasError('maxlength')) { <span class="error">Máximo 80 caracteres</span> }
+      }
+    </div>
+
+    <div class="campo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" formControlName="categoria">
+        <option value="">Elige una categoría</option>
+        @for (cat of categorias; track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+      @if (c.categoria.touched && c.categoria.hasError('required')) {
+        <span class="error">Elige una categoría</span>
+      }
+    </div>
+
+    <div class="campo">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" rows="3" formControlName="descripcion"></textarea>
+      @if (c.descripcion.touched) {
+        @if (c.descripcion.hasError('required')) { <span class="error">La descripción es obligatoria</span> }
+        @if (c.descripcion.hasError('maxlength')) { <span class="error">Máximo 255 caracteres</span> }
+      }
+    </div>
+
+    <div class="campo">
+      <label for="duracionMin">Duración (minutos)</label>
+      <input id="duracionMin" type="number" formControlName="duracionMin" />
+      @if (c.duracionMin.touched) {
+        @if (c.duracionMin.hasError('required')) { <span class="error">La duración es obligatoria</span> }
+        @if (c.duracionMin.hasError('min')) { <span class="error">La duración mínima es de 10 minutos</span> }
+        @if (c.duracionMin.hasError('bloquesDeCinco')) {
+          <span class="error">La duración debe ir en bloques de 5 minutos</span>
+        }
+      }
+    </div>
+
+    <div class="campo">
+      <label for="imagen">Imagen (ruta)</label>
+      <input id="imagen" type="text" formControlName="imagen" placeholder="/img/clase-09.jpg" />
+      @if (c.imagen.touched) {
+        @if (c.imagen.hasError('required')) { <span class="error">La imagen es obligatoria</span> }
+        @if (c.imagen.hasError('pattern')) { <span class="error">Debe empezar con /img/</span> }
+        @if (c.imagen.hasError('maxlength')) { <span class="error">Máximo 120 caracteres</span> }
+      }
+    </div>
+
+    <div class="acciones">
+      <button class="boton" type="submit">Guardar</button>
+    </div>
+  </form>
+
+  @if (objetoListo(); as obj) {
+    <div class="aviso aviso--exito" style="margin-top: 1rem">
+      <strong>Objeto listo para mandar a la API (aún no se envía):</strong>
+      <pre>{{ obj | json }}</pre>
+    </div>
+  }
+</main>
