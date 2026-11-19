@@ -1,0 +1,19 @@
+<header class="barra">
+  <div class="barra__interior">
+    <span class="barra__marca">
+      <img src="/logo.svg" alt="Logo" />
+      Gimnasio Titanes
+    </span>
+    <span class="barra__etiqueta">Admin</span>
+
+    <nav class="barra__enlaces">
+      <a class="barra__enlace" routerLink="/clases" routerLinkActive="barra__enlace--activo">Clases</a>
+      <a class="barra__enlace" routerLink="/horarios" routerLinkActive="barra__enlace--activo">Horarios</a>
+      <a class="barra__enlace" routerLink="/miembros" routerLinkActive="barra__enlace--activo">Miembros</a>
+      <span class="barra__quien">{{ sesion.usuario()?.nombre }}</span>
+      <button class="boton boton--secundario boton--chico" (click)="sesion.salir()">Salir</button>
+    </nav>
+  </div>
+</header>
+
+<router-outlet />

@@ -1,0 +1,26 @@
+<main class="login">
+  <form class="tarjeta" [formGroup]="formulario" (ngSubmit)="entrar()" novalidate>
+    <div class="login__marca">
+      <img src="/logo.svg" alt="Logo" />
+      <h1>Gimnasio Titanes</h1>
+    </div>
+
+    <div class="campo">
+      <label for="correo">Correo</label>
+      <input id="correo" type="email" formControlName="correo" autocomplete="username" />
+    </div>
+
+    <div class="campo">
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" type="password" formControlName="contrasena" autocomplete="current-password" />
+    </div>
+
+    @if (error(); as mensaje) {
+      <div class="aviso aviso--error">{{ mensaje }}</div>
+    }
+
+    <button class="boton" type="submit" [disabled]="entrando()">
+      {{ entrando() ? 'Entrando…' : 'Entrar' }}
+    </button>
+  </form>
+</main>

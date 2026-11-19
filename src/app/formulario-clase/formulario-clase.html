@@ -1,7 +1,7 @@
 <main class="pagina">
   <div class="encabezado">
     <div>
-      <h1>Nueva clase</h1>
+      <h1>{{ editando() ? 'Editar clase' : 'Nueva clase' }}</h1>
       <p>Llena los datos de la clase</p>
     </div>
     <a class="boton boton--secundario" routerLink="/clases">← Volver al catálogo</a>
@@ -61,15 +61,14 @@
       }
     </div>
 
+    @if (errorServidor(); as mensaje) {
+      <div class="aviso aviso--error">{{ mensaje }}</div>
+    }
+
     <div class="acciones">
-      <button class="boton" type="submit">Guardar</button>
+      <button class="boton" type="submit" [disabled]="guardando()">
+        {{ guardando() ? 'Guardando…' : 'Guardar' }}
+      </button>
     </div>
   </form>
-
-  @if (objetoListo(); as obj) {
-    <div class="aviso aviso--exito" style="margin-top: 1rem">
-      <strong>Objeto listo para mandar a la API (aún no se envía):</strong>
-      <pre>{{ obj | json }}</pre>
-    </div>
-  }
 </main>

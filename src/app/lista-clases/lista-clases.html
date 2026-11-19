@@ -24,9 +24,17 @@
 
   <app-filtro-categoria />
 
-  <div class="acciones">
+  <div class="buscador">
+    <input type="search" [formControl]="busqueda" placeholder="Buscar clase por nombre…" />
+    <span class="buscador__estado">
+      @if (catalogo.cargando()) { Buscando… }
+    </span>
     <button class="boton boton--secundario" (click)="catalogo.recargar()">Recargar</button>
   </div>
+
+  @if (errorAccion(); as mensaje) {
+    <div class="aviso aviso--error">{{ mensaje }}</div>
+  }
 
   @if (catalogo.cargando()) {
     <p class="cargando">Cargando clases…</p>
@@ -44,7 +52,11 @@
             (elegida)="catalogo.seleccionar($event)"
           />
         } @empty {
-          <p class="vacio">No hay clases en el catálogo.</p>
+          @if (catalogo.termino()) {
+            <p class="vacio">Ninguna clase coincide con «{{ catalogo.termino() }}».</p>
+          } @else {
+            <p class="vacio">No hay clases en el catálogo.</p>
+          }
         }
       </section>
 
@@ -55,6 +67,10 @@
           <p>{{ sel.descripcion }}</p>
           <div class="dato"><span class="dato__clave">Categoría:</span><span class="dato__valor">{{ sel.categoria }}</span></div>
           <div class="dato"><span class="dato__clave">Duración:</span><span class="dato__valor">{{ sel.duracionMin }} min</span></div>
+          <div class="acciones">
+            <a class="boton boton--chico" [routerLink]="['/clases', sel.id, 'editar']">Editar</a>
+            <button class="boton boton--peligro boton--chico" (click)="eliminar(sel)">Eliminar</button>
+          </div>
         } @else {
           <p class="vacio">Elige una clase para ver su detalle.</p>
         }
