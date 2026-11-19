@@ -1,3 +1,17 @@
+## Ejercicio 1
+
+- ¿Qué diferencia hay entre un signal y un Observable?
+Un signal siempre tiene un valor actual que se puede leer de forma síncrona (`s()`), y Angular sabe qué plantillas lo usan para actualizarlas. Un Observable es un flujo de valores en el tiempo: no tiene "valor actual" hasta que alguien se suscribe y emite, puede ser asíncrono, terminar o fallar, y tiene operadores para transformarlo (debounce, switchMap, etc.). Los signals son ideales para estado de la interfaz; los Observables, para eventos y flujos asíncronos. `toSignal` conecta los dos.
+
+## Ejercicio 2
+
+- ¿Qué problema evita `switchMap` y qué pasaría con `mergeMap`?
+`switchMap` cancela la petición anterior cuando llega un término nuevo, y así solo cuenta la respuesta de la última búsqueda (en la pestaña Red las anteriores salen como "canceladas"). Con `mergeMap` todas las peticiones quedarían vivas a la vez y sus respuestas llegarían en cualquier orden: una búsqueda vieja y lenta podría responder después de la nueva y pisar la lista, mostrando resultados que no corresponden a lo escrito (condición de carrera).
+
+- ¿Qué pasa si se quita `catchError` y la API se apaga?
+El error llega al `switchMap` y el Observable del tubo termina con error: deja de existir. Aunque se encienda la API otra vez y el usuario siga escribiendo, ya no se hace ninguna búsqueda y la pantalla se queda congelada (además `toSignal` lanza el error al leer el signal). Con `catchError` dentro del `switchMap` el error se convierte en un estado y el tubo sigue vivo.
+
+
 # GimnasioAdmin
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
